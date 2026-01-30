@@ -2,8 +2,8 @@ import "reflect-metadata";
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { AppDataSource } from "./data-source";
-import { uploadMiddleware, uploadFileToSupabase } from "./upload";
+import { AppDataSource } from "../data-source";
+import { uploadFileToSupabase, uploadMiddleware } from "../upload";
 
 dotenv.config();
 
