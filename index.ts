@@ -44,6 +44,9 @@ async function startServer() {
     console.error("❌ Error starting server:", error);
   }
 }
+server.express?.get("/", (req, res) => {
+  res.send("✅ API is running successfully!");
+});
 
 startServer();
 
