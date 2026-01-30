@@ -1,0 +1,48 @@
+api get /admin/applications {
+    alias adminGetUserApplicationsList
+    headers {
+        authorization string required
+    }
+    query {
+        limit number
+        offset number
+        id_user number
+        id_user_applicant number
+        application_status enum.ApplicationStatus
+        application_type enum.ApplicationType
+        student_status enum.StudentStatus
+        created_at string
+        verified_at string
+    }
+    return {
+        total number required
+        data array table.Application required
+    } required
+}
+
+api get /admin/application/:id {
+    alias adminGetApplicationById
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    return table.Application required
+}
+
+api put /admin/application/:id_application { 
+    alias adminVerifyApplicationById
+    headers {
+        authorization string required
+    }
+    path {
+        id_application number required
+    }
+    body {
+        application_status enum.ApplicationStatus required
+        notes string
+    }
+    return table.Application required
+}
+

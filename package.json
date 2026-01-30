@@ -1,0 +1,46 @@
+{
+  "name": "test-be",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "typeorm": "typeorm-ts-node-commonjs",
+    "generate-migration": "npm run typeorm migration:generate -- $1 -d ./data-source.ts",
+    "migrate": "npm run typeorm migration:run -- -d ./data-source.ts",
+    "codegen": "codegen-model-typeorm -d design -o types",
+    "build": "rm -rf dist && tsc",
+    "start": "node dist index.js",
+    "dev": "npm run build && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.10.9",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.964.0",
+    "@naiv/codegen-model-typeorm": "^0.0.28",
+    "@supabase/supabase-js": "^2.93.2",
+    "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "moment": "^2.30.1",
+    "multer": "^2.0.2",
+    "mysql2": "^3.15.2",
+    "pg": "^8.17.2",
+    "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.28"
+  }
+}

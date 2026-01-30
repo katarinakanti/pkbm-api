@@ -1,0 +1,13 @@
+api put /admin/application/payment/:id {
+    alias adminVerifyPayment
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    body {
+        payment_verification_status boolean required
+    }
+    return table.Application required
+}

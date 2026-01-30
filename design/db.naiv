@@ -1,0 +1,108 @@
+enum Gender {
+  M
+  F
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  VERIFIED
+  REJECTED
+}
+
+enum PendidikanTerakhir {
+  TK
+  SD
+  SMP
+  SMA
+  S1
+}
+
+enum StudentStatus {
+  BARU
+  MUTASIPINDAHAN
+}
+
+enum ApplicationType {
+  SD
+  SMP
+  SMA
+}
+
+table User {
+  id bigint pk inc notnull
+  fullname varchar(500) notnull
+  email varchar(500) notnull
+  phone_number varchar(100)
+  password varchar(500) notnull
+
+  email_verification_token varchar(500) notnull
+  email_reset_password_token varchar(500)
+
+  update_email_otp varchar(10)
+  update_email_token varchar(100)
+  verified_at timestamp
+  created_at timestamp notnull default=NOW()
+}
+
+table UserApplicant {
+  id bigint pk inc notnull
+  id_user User.id notnull
+  fullname varchar(500) notnull
+  email varchar(500) notnull
+  phone_number varchar(100)
+  address text
+  gender enum.Gender notnull
+  birth_date date notnull
+  birth_place varchar(500)
+  religion varchar(30)
+}
+
+table Application {
+    id bigint pk inc notnull
+    id_user User.id notnull
+    id_user_applicant UserApplicant.id notnull
+    status_application enum.ApplicationStatus notnull default=SUBMITTED
+    application_type enum.ApplicationType notnull
+
+    nisn varchar(10) 
+    nik varchar(16) notnull
+
+    parent_fullname text notnull
+    parent_phone varchar(100) notnull
+    parent_email varchar(500) notnull
+
+    pendidikan_terakhir enum.PendidikanTerakhir notnull
+    grade_terakhir varchar(10) notnull
+    asal_sekolah text notnull
+    student_status enum.StudentStatus notnull
+    alasan_pindah text
+
+    kk_url varchar(500) notnull
+    akta_lahir_url varchar(500) notnull
+    ktp_ortu_url varchar(500) notnull
+    photo_url varchar(500) notnull
+    selfie_url varchar(500) notnull
+    ijazah_terakhir_url varchar(500)
+    raport_url varchar(500)
+    surat_pindah_url varchar(500)
+
+    created_at timestamp notnull default=NOW()
+    verified_at timestamp
+    verified_by Admin.id
+    notes text
+    updated_at timestamp 
+
+    payment_status bool 
+    payment_verification_status bool 
+    paid_at timestamp
+    payment_proof_url varchar(500)
+}
+
+table Admin {
+  id bigint pk inc notnull
+  fullname varchar(500) notnull
+  email varchar(500) notnull
+  password varchar(500) notnull
+
+  created_at timestamp notnull default=NOW()
+}

@@ -1,0 +1,42 @@
+api post /register {
+  alias registerNewUser
+  body {
+    fullname string required
+    email string required
+    phone_number string required
+    password string required
+  }
+  return {
+    token string required
+    user table.User required
+  } required
+}
+
+api post /login {
+  alias loginUser
+  body {
+    email string required
+    password string required
+  }
+  return {
+    token string required
+    user table.User required
+  } required
+}
+
+api post /verify-registration-email {
+  alias verifyEmailRegistration
+  body {
+    email string required
+    verification_token string required
+  }
+  return boolean required
+}
+
+api get /profile {
+  alias getProfile
+  headers {
+    authorization string required
+  }
+  return table.User required
+}

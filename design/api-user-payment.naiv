@@ -1,0 +1,14 @@
+api put /user/application/payment/:id {
+    alias userMakePayment
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    body {
+        payment_proof_url string required
+
+    }
+    return table.Application required
+}

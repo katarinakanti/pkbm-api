@@ -1,0 +1,7 @@
+outmodel
+node_modules
+dist
+.config
+.env
+uploads
+design/req_plan.txt

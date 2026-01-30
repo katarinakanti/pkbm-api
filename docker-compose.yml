@@ -1,0 +1,7 @@
+services:
+  naiv:
+    build: .
+    container_name: boilerplate
+    ports:
+      - "9415:9415"
+    restart: always

@@ -1,0 +1,105 @@
+api get /user/applications {
+    alias userGetUserApplicationsList
+    headers {
+        authorization string required
+    }
+    query {
+        limit number
+        offset number
+        id_user_applicant number
+        status_application enum.ApplicationStatus
+        application_type enum.ApplicationType
+        created_at string
+    }
+    return {
+        total number required
+        data array table.Application required
+    } required
+}
+
+api get /user/application/:id {
+    alias userGetUserApplicationById
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    return table.Application
+}
+
+api post /user/application {
+    alias userCreateApplication
+    headers {
+        authorization string required
+    }
+    body {
+        id_user number required
+        id_user_applicant number required
+        application_type enum.ApplicationType required
+        nisn string
+        nik string required
+        parent_fullname string required
+        parent_phone string required
+        parent_email string required
+        pendidikan_terakhir enum.PendidikanTerakhir required
+        grade_terakhir string required
+        asal_sekolah string required
+        student_status enum.StudentStatus required
+        alasan_pindah string
+        kk_url string required
+        akta_lahir_url string required
+        ktp_ortu_url string required
+        photo_url string required
+        selfie_url string required
+        ijazah_terakhir_url string
+        raport_url string 
+        surat_pindah_url string 
+    }
+    return table.Application
+}
+
+api put /user/application/:id {
+    alias userUpdateUserApplicationById
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    body {
+        id_user_applicant number
+        application_type enum.ApplicationType
+        nisn string
+        nik string
+        parent_dad_fullname string
+        parent_mom_fullname string
+        parent_phone string
+        parent_email string 
+        pendidikan_terakhir enum.PendidikanTerakhir
+        grade_terakhir string
+        asal_sekolah string
+        student_status enum.StudentStatus 
+        alasan_pindah string
+        kk_url string
+        akta_lahir_url string
+        ktp_ortu_url string
+        photo_url string
+        selfie_url string
+        ijazah_terakhir_url string
+        raport_url string 
+        surat_pindah_url string 
+    }
+    return table.Application
+}
+
+api delete /user/application/:id {
+    alias userDeleteUserApplicationById
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    return boolean
+}

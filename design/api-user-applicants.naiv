@@ -1,0 +1,57 @@
+api get /user/applicants {
+    alias userGetUserApplicantsList
+    headers {
+        authorization string required
+    }
+    return array table.UserApplicant required
+}
+
+api post /user/applicant {
+    alias userCreateUserApplicant
+     headers {
+        authorization string required
+    }
+    body {
+        fullname string required
+        email string required
+        phone_number string required
+        address string
+        gender enum.Gender required
+        birth_date number required
+        birth_place string 
+        religion string
+    }
+    return table.UserApplicant required
+}
+
+api put /user/applicant/:id {
+    alias userUpdateUserApplicantById
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    body {
+        fullname string
+        email string
+        phone_number string 
+        address string
+        gender enum.Gender
+        birth_date number
+        birth_place string
+        religion string
+    }
+    return table.UserApplicant required
+}
+
+api delete /user/applicant/:id {
+    alias userDeleteUserApplicantById
+    headers {
+        authorization string required
+    }
+    path {
+        id number required
+    }
+    return boolean
+}

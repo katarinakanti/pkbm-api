@@ -1,0 +1,25 @@
+api post /admin/login {
+  alias loginAdmin
+  description api login untuk admin
+  body {
+    email string required
+    password string required
+  }
+  return {
+    token string required
+    admin table.Admin required
+  } required
+}
+
+api post /admin/register {
+  alias registerAdmin
+  body {
+    fullname string required
+    email string required
+    password string required
+  }
+  return {
+    token string required
+    admin table.Admin required
+  } required
+}
