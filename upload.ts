@@ -1,45 +1,90 @@
+import { Request, Response, Router } from "express";
 import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
+import path from "path";
 import { createClient } from "@supabase/supabase-js";
+import { getAdminFromAuthHeader } from "./jwt";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
-// --- PART 1: SUPABASE SETUP ---
+// SUPABASE SETUP
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
+const BUCKET_NAME = process.env.SUPABASE_BUCKET_NAME || "images";
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error("Missing Supabase credentials in .env");
+  throw new Error("Supabase credentials are not configured");
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-const BUCKET_NAME = "images"; // Make sure this bucket exists in Supabase
 
-// --- PART 2: MULTER SETUP ---
-// This keeps the file in RAM so we can pass it to Supabase manually.
-const storage = multer.memoryStorage();
+// ROUTER
+export function getRouterUpload() {
+  const router_upload = Router();
 
-// Export this middleware so index.ts can use it
-export const uploadMiddleware = multer({ storage: storage });
+  router_upload.post(
+    "/upload",
+    multer().any(),
+    async (req: Request, res: Response) => {
+      const authorization = req.headers.authorization ?? "";
 
-// --- PART 3: THE UPLOAD HELPER ---
-// This function takes the file from RAM and sends it to Supabase
-export const uploadFileToSupabase = async (file: Express.Multer.File) => {
-  const filename = `${Date.now()}-${file.originalname}`;
+      // ---- ADMIN AUTH ----
+      try {
+        await getAdminFromAuthHeader(authorization);
+      } catch {
+        res.status(401).end("This endpoint is restricted");
+        return;
+      }
 
-  const { data, error } = await supabase.storage
-    .from(BUCKET_NAME)
-    .upload(filename, file.buffer, {
-      contentType: file.mimetype,
-      upsert: true,
-    });
+      // ---- VALIDATION ----
+      try {
+        if (!(req as any).files || (req as any).files.length === 0) {
+          res.status(400).end("Bad request");
+          return;
+        }
 
-  if (error) throw error;
+        const file = ((req as any).files as any)[0];
+        const fileUrl = await uploadToSupabase(
+          file.buffer,
+          file.originalname,
+          file.mimetype,
+        );
 
-  // Get the public URL
-  const { data: publicUrlData } = supabase.storage
-    .from(BUCKET_NAME)
-    .getPublicUrl(data.path);
+        res.json(fileUrl);
+      } catch (err: any) {
+        console.error(err);
+        res.status(500).end(err.toString());
+      }
+    },
+  );
 
-  return publicUrlData.publicUrl;
-};
+  // UPLOAD HELPER
+  async function uploadToSupabase(
+    buffer: Buffer,
+    originalName: string,
+    mimeType: string,
+  ): Promise<string> {
+    const extension = path.extname(originalName);
+    const filename = `${uuidv4()}${extension}`;
+
+    const { data, error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .upload(filename, buffer, {
+        contentType: mimeType,
+        upsert: false,
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(data.path);
+
+    return publicUrlData.publicUrl;
+  }
+
+  return router_upload;
+}
