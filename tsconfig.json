@@ -1,7 +1,6 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
@@ -23,5 +22,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "outDir": "dist"
-  }
+  },
+  "include": ["src/**/*", "index.ts"]
 }

@@ -1,11 +1,9 @@
 require("dotenv").config();
 import cors from "cors";
 import "reflect-metadata";
-// CHANGED: Added ./src/ because file is now in root
 import { AppDataSource } from "./data-source";
 import { Server } from "@naiv/codegen-model-typeorm";
 import path from "path";
-// CHANGED: Added ./src/
 import { getRouterUpload } from "./upload";
 
 const server = new Server();
@@ -31,6 +29,7 @@ async function startServer() {
     const implPath = path.join(__dirname, "src", "implementation");
 
     console.log("📂 Loading routes from:", typesPath);
+    console.log("📂 Loading implementation from:", implPath);
 
     server.run({
       port: +(process.env.PORT ?? 8000),
