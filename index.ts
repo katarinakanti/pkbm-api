@@ -5,6 +5,7 @@ import { AppDataSource } from "./data-source";
 import { Server } from "@naiv/codegen-model-typeorm";
 import path from "path";
 import { getRouterUpload } from "./upload";
+import "./implementation/adminGetApplicationById";
 
 const server = new Server();
 
@@ -26,7 +27,7 @@ async function startServer() {
     }
 
     const typesPath = path.join(__dirname, "src", "types");
-    const implPath = path.join(__dirname, "src", "implementation");
+    const implPath = path.join(__dirname, "implementation");
 
     console.log("📂 Loading routes from:", typesPath);
     console.log("📂 Loading implementation from:", implPath);
