@@ -6,8 +6,8 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "generate-migration": "npm run typeorm migration:generate -- $1 -d ./data-source.ts",
     "migrate": "npm run typeorm migration:run -- -d ./data-source.ts",
-    "codegen": "codegen-model-typeorm -d design -o types",
-    "build": "rm -rf dist && tsc",
+    "codegen": "codegen-model-typeorm -d design -o src/types",
+    "build": "npm run codegen && rm -rf dist && tsc",
     "start": "node dist/src/index.js",
     "dev": "npm run build && npm start"
   },
