@@ -8,7 +8,7 @@
     "migrate": "npm run typeorm migration:run -- -d ./data-source.ts",
     "codegen": "codegen-model-typeorm -d design -o types",
     "build": "rm -rf dist && tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "dev": "npm run build && npm start"
   },
   "keywords": [],
