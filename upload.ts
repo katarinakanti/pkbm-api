@@ -3,7 +3,8 @@ import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import { createClient } from "@supabase/supabase-js";
-import { getAdminFromAuthHeader } from "./jwt";
+// 👇 UPDATED: Import the User checker instead of (or in addition to) the Admin one
+import { getUserFromAuthHeader } from "./jwt";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -29,11 +30,12 @@ export function getRouterUpload() {
     async (req: Request, res: Response) => {
       const authorization = req.headers.authorization ?? "";
 
-      // ---- ADMIN AUTH ----
+      // ---- USER AUTH ----
+      // 👇 UPDATED: Now checks if you are a User (not just an Admin)
       try {
-        await getAdminFromAuthHeader(authorization);
+        await getUserFromAuthHeader(authorization);
       } catch {
-        res.status(401).end("This endpoint is restricted");
+        res.status(401).end("This endpoint is restricted to Users");
         return;
       }
 
