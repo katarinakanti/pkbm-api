@@ -29,6 +29,7 @@ const dataSourceOptions: DataSourceOptions = {
   // Ensure we check for both .ts (dev) and .js (prod/Vercel)
   entities: [__dirname + "/types/model/**/*.{ts,js}"],
   migrations: [__dirname + "/migration/**/*.{ts,js}"],
+  ssl: { rejectUnauthorized: false },
 
   extra: {
     connectionTimeoutMillis: 10000,
