@@ -1,12 +1,11 @@
 import { IsNull, Not } from "typeorm";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { v4 } from "uuid";
 import { signJWT } from "../jwt";
 import { T_registerAdmin } from "../types/api/registerAdmin";
-import { User } from "../types/model/table/User";
 import { Admin } from "../types/model/table/Admin";
 
-export const registerAdmin: T_registerAdmin = async req => {
+export const registerAdmin: T_registerAdmin = async (req) => {
   if (await Admin.existsBy({ email: req.body.email })) {
     throw new Error(`email sudah terdaftar`);
   }
@@ -20,7 +19,7 @@ export const registerAdmin: T_registerAdmin = async req => {
 
   await admin.save();
   return {
-    token: signJWT(admin.id),
-    admin
+    token: signJWT({ id: admin.id }),
+    admin,
   };
-}
+};
