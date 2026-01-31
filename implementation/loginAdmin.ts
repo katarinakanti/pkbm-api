@@ -1,10 +1,10 @@
 import { signJWT } from "../jwt";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { T_loginAdmin } from "../types/api/loginAdmin";
 import { User } from "../types/model/table/User";
 import { Admin } from "../types/model/table/Admin";
 
-export const loginAdmin: T_loginAdmin = async req => {
+export const loginAdmin: T_loginAdmin = async (req) => {
   const admin = await Admin.findOneBy({ email: req.body.email });
   if (!admin) {
     throw new Error(`Email not found`);
@@ -16,7 +16,7 @@ export const loginAdmin: T_loginAdmin = async req => {
   }
 
   return {
-    token: signJWT(admin.id),
-    admin
-  }
-}
+    token: signJWT({ id: admin.id }),
+    admin,
+  };
+};
